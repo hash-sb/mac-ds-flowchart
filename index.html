@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Data Science Major Interactive Flowchart</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Vis-Network Library -->
+  <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
+  <style>
+    #network-container {
+      width: 100%;
+      height: calc(100vh - 73px);
+      background-color: #f8fafc;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 font-sans text-slate-800 flex flex-col h-screen">
+
+  <!-- Header & Toolbar -->
+  <header class="bg-white border-b border-slate-200 px-6 py-4 shadow-sm flex flex-wrap justify-between items-center gap-4 z-10">
+    <div>
+      <h1 class="text-lg font-bold text-slate-900">Data Science Major Interactive Flowchart</h1>
+      <p class="text-xs text-slate-500">Click any course to inspect prerequisites and mark progress</p>
+    </div>
+
+    <!-- Filter & Controls -->
+    <div class="flex items-center gap-3">
+      <select id="filter-category" onchange="filterCategory(this.value)" class="bg-slate-100 text-xs text-slate-700 px-3 py-2 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        <option value="all">All Categories</option>
+        <option value="core">Core Courses</option>
+        <option value="math">Math Requirements</option>
+        <option value="elective">Electives</option>
+      </select>
+
+      <button onclick="resetGraph()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs px-3.5 py-2 rounded-md font-medium transition-colors shadow-sm">
+        Reset View
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Application Body -->
+  <div class="flex flex-1 overflow-hidden relative">
+    <!-- Interactive Graph Container -->
+    <main class="flex-1">
+      <div id="network-container"></div>
+    </main>
+
+    <!-- Slide-out Side Details Panel -->
+    <aside id="detail-panel" class="w-80 bg-white border-l border-slate-200 p-6 flex flex-col justify-between hidden shadow-lg z-20">
+      <div>
+        <span id="course-type" class="text-xs uppercase tracking-wider font-semibold px-2 py-1 rounded"></span>
+        <h2 id="course-code" class="text-xl font-bold mt-3 text-slate-900"></h2>
+        <h3 id="course-title" class="text-sm text-slate-600 mb-6"></h3>
+
+        <div class="space-y-5">
+          <div>
+            <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Prerequisites</h4>
+            <p id="course-prereqs" class="text-xs text-slate-800 mt-1.5 font-medium leading-relaxed"></p>
+          </div>
+
+          <div>
+            <h4 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Track Status</h4>
+            <div class="flex gap-2">
+              <button onclick="setCourseStatus('completed')" class="flex-1 py-1.5 text-xs font-medium rounded bg-emerald-100 text-emerald-800 hover:bg-emerald-200 transition-colors">Completed</button>
+              <button onclick="setCourseStatus('planned')" class="flex-1 py-1.5 text-xs font-medium rounded bg-amber-100 text-amber-800 hover:bg-amber-200 transition-colors">Planned</button>
+              <button onclick="setCourseStatus('none')" class="flex-1 py-1.5 text-xs font-medium rounded bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors">Clear</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-slate-100 pt-4 text-xs text-slate-400 flex justify-between">
+        <span>Course ID: <span id="course-id"></span></span>
+        <button onclick="hideDetails()" class="text-slate-500 hover:underline">Close</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Load Data First, then Load App Logic -->
+  <script src="courses.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
